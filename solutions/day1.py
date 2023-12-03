@@ -24,6 +24,7 @@ def part2(lines):
         total += val
     return total
 
-solve(part1, day=1)
-solve(part2, day=1)
+day = __file__.split('day')[-1].split('.py')[0]
+solve(part1, day)
+solve(part2, day)
 #test(part2, lines=['eightf24oneone'])
