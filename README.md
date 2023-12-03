@@ -10,3 +10,7 @@ Run the solutions:
 # run command from solutions folder
 for f in *.py; do python "$f"; done
 ```
+
+## Fun Stuff
+
+For shortened solutions, I'm aiming to fully solve a given part within 10 lines of code.
