@@ -17,27 +17,16 @@ def part1(lines):
     return sum([fn(line, row) for row, line in enumerate(lines)])
 
 def part2(lines):
-    # TODO: not yet shortened
-    symbols = ['*']
     grid = [list(line) for line in lines]
-    total = 0
     adj_map = defaultdict(list)
-    for row, line in enumerate(lines):
-        for match in re.finditer(r'\d+', line):
-            num_range = (match.start(), match.end())
-            adj_symbol = False
-            for col in range(num_range[0]-1, num_range[1]+1):
-                if gv(grid, row-1, col) in symbols:
-                    adj_map[(row-1, col)].append(int(line[match.start():match.end()]))
-                if gv(grid, row, col) in symbols:
-                    adj_map[(row, col)].append(int(line[match.start():match.end()]))
-                if gv(grid, row+1, col) in symbols:
-                    adj_map[(row+1, col)].append(int(line[match.start():match.end()]))
-    total = 0
-    for k, v in adj_map.items():
-        if len(v) == 2:
-            total += (v[0] * v[1])
-    return total
+    def grid_fn(m, line, r, c):
+        [adj_map[(p[0], p[1])].append(int(line[m.start():m.end()])) if gv(grid, p[0], p[1]) == '*' else '' for p in [(r-1, c), (r, c), (r+1, c)]]
+    def match_fn(m, line, row):
+        [grid_fn(m, line, row, col) for col in range(m.start()-1, m.end()+1)]
+    def fn(line, row):
+        [match_fn(m, line, row) for m in re.finditer(r'\d+', line)]
+    [fn(line, row) for row, line in enumerate(lines)]
+    return sum([(v[0] * v[1]) if len(v) == 2 else 0 for k, v in adj_map.items()])
 
 day = __file__.split('day')[-1].split('.py')[0]
 solve(part1, day)

@@ -28,12 +28,10 @@ def part1(lines):
 def part2(lines):
     symbols = ['*']
     grid = [list(line) for line in lines]
-    total = 0
     adj_map = defaultdict(list)
     for row, line in enumerate(lines):
         for match in re.finditer(r'\d+', line):
             num_range = (match.start(), match.end())
-            adj_symbol = False
             for col in range(num_range[0]-1, num_range[1]+1):
                 if gv(grid, row-1, col) in symbols:
                     adj_map[(row-1, col)].append(int(line[match.start():match.end()]))
